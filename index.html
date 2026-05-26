@@ -7,10 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Cinzel:wght@600;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 
-  <!-- Firebase SDKs (compat version — works with script tags, no npm needed) -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
 
   <!-- Theme applied before paint to avoid flash -->
   <script>
@@ -88,7 +85,7 @@
 
 <div class="toast-container" id="toast-container"></div>
 
-<header>
+<header id="main-header" style="display:none;">
   <div class="logo">
     <div class="logo-icon">AF</div>
     <div>
@@ -123,12 +120,12 @@
 </header>
 
 <!-- KEYBOARD MODE HINT BAR -->
-<div class="kb-hint-bar" id="kb-hint-bar">
+<div class="kb-hint-bar" id="kb-hint-bar" style="display:none;">
   <span class="kb-hint-icon">💡</span>
   <span id="kb-hint-text"><span class="kb-hint-strong">Recommended:</span> Keep Windows keyboard set to <span class="kb-hint-strong">English (QWERTY)</span>. This app maps keys to Urdu Phonetic internally.</span>
 </div>
 
-<div class="app fade-in">
+<div class="app fade-in" id="main-app" style="display:none;">
   <div class="stats">
     <div class="stat-card wpm"><div class="stat-value" id="wpm-val">0</div><div class="stat-label">WPM</div></div>
     <div class="stat-card acc"><div class="stat-value" id="acc-val">100%</div><div class="stat-label">Accuracy</div></div>
@@ -348,8 +345,8 @@
   <script src="js/engine.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/init.js"></script>
-  <!-- Auth loads last — boots app after login confirmed -->
-  <script src="js/auth.js"></script>
+  <!-- Auth loads last as ES module — boots app after login confirmed -->
+  <script type="module" src="js/auth.js"></script>
 
 </body>
 </html>
