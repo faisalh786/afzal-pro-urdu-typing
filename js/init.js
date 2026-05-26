@@ -55,26 +55,12 @@ function setKbMode(mode){
 })();
 
 // ============================================================
-// INIT
+// INIT — app boot is handled by auth.js → _bootApp()
+// Focus persistence stays here
 // ============================================================
-buildKeyboard(); // builds keyboard + populates keyElCache + shiftKeyEls
-selectGroup('hr');
-initLesson();
-buildRef();
-const initData=loadData();
-document.getElementById('streak-val').textContent=initData.streak||0;
-// Restore candidate name
-const savedCand=localStorage.getItem(CAND_KEY)||'';
-const nameInput=document.getElementById('candidate-name-input');
-if(nameInput&&savedCand)nameInput.value=savedCand;
-document.getElementById('capture').focus();
-
-// ── Always keep capture focused (handles tab-switch, reopen, alt-tab) ──
 const _refocus=()=>{
   const _cap=document.getElementById('capture');
   if(_cap&&document.activeElement!==_cap)_cap.focus();
 };
 window.addEventListener('focus',_refocus);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(_refocus,120);});
-// Also refocus initLesson, nextWord, initPractice on each call
-const _origInitLesson=initLesson;
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(_refocus,150);});
