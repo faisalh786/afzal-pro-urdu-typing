@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AFZAL PRO — Urdu Typing Master | Phonetic Keyboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Cinzel:wght@600;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Theme applied before paint to avoid flash -->
+  <script>
+(function(){
+  var p=localStorage.getItem('urdu-tm-theme')||'system';
+  var r=p==='system'?(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):p;
+  document.documentElement.setAttribute('data-theme',r);
+})();
+  </script>
+</head>
+<body>
+
+<input id="capture" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+
+<!-- PRINT REPORT (hidden; shown only on print) -->
+<div id="print-report">
+  <div class="pr-wrap">
+    <div class="pr-logo">AFZAL PRO</div>
+    <div class="pr-tagline">Urdu Typing Master · Phonetic Keyboard · PPSC Preparation</div>
+    <div class="pr-report-title">Performance Report</div>
+    <div class="pr-section-title">Candidate Information</div>
+    <div class="pr-candidate-row pr-name-row"><span>Candidate Name:</span><span id="pr-name">—</span></div>
+    <div class="pr-candidate-row"><span>Test Type:</span><span id="pr-type">—</span></div>
+    <div class="pr-candidate-row"><span>Lesson / Test:</span><span id="pr-lesson">—</span></div>
+    <div class="pr-candidate-row"><span>Date:</span><span id="pr-date">—</span></div>
+    <div class="pr-divider"></div>
+    <div class="pr-section-title">Performance Metrics</div>
+    <div class="pr-stats-grid">
+      <div class="pr-stat-box"><div class="pr-stat-val" id="pr-wpm">0</div><div class="pr-stat-lbl">WPM</div></div>
+      <div class="pr-stat-box"><div class="pr-stat-val" id="pr-acc">0%</div><div class="pr-stat-lbl">Accuracy</div></div>
+      <div class="pr-stat-box"><div class="pr-stat-val" id="pr-chars">0</div><div class="pr-stat-lbl">Characters</div></div>
+      <div class="pr-stat-box"><div class="pr-stat-val" id="pr-grade-box">—</div><div class="pr-stat-lbl">Grade</div></div>
+    </div>
+    <div class="pr-divider"></div>
+    <div class="pr-section-title">Performance Summary</div>
+    <div class="pr-summary-text" id="pr-summary-text">—</div>
+    <div class="pr-footer">
+      <span>AFZAL PRO Urdu Typing Master | NLA Standard Keyboard</span>
+      <span id="pr-footer-date">—</span>
+    </div>
+  </div>
+</div>
+
+<!-- CERTIFICATE MODAL -->
+<div class="cert-modal" id="cert-modal">
+  <div class="cert-container">
+    <div class="certificate" id="certificate">
+      <div class="cert-corner tl"></div><div class="cert-corner tr"></div>
+      <div class="cert-corner bl"></div><div class="cert-corner br"></div>
+      <div class="cert-logo">AFZAL PRO</div>
+      <div class="cert-subtitle">Urdu Typing Master — Phonetic Keyboard</div>
+      <div class="cert-title">Certificate of Achievement</div>
+      <div style="font-size:0.6rem;letter-spacing:3px;color:rgba(226,165,0,0.55);text-transform:uppercase;margin-bottom:6px;">This Certifies That</div>
+      <div class="cert-name" id="cert-name">—</div>
+      <div class="cert-grade-ring"><div class="cert-grade-letter" id="cert-grade-letter">A</div></div>
+      <div class="cert-body" id="cert-body">—</div>
+      <div class="cert-stats-row">
+        <div class="cert-stat"><div class="cert-stat-val" id="cert-wpm">0</div><div class="cert-stat-lbl">WPM</div></div>
+        <div class="cert-stat"><div class="cert-stat-val" id="cert-acc">0%</div><div class="cert-stat-lbl">Accuracy</div></div>
+        <div class="cert-stat"><div class="cert-stat-val" id="cert-chars">0</div><div class="cert-stat-lbl">Characters</div></div>
+      </div>
+      <div class="cert-footer">
+        <div class="cert-date" id="cert-date">—</div>
+        <div class="cert-seal">🏅</div>
+        <div style="font-size:0.6rem;color:var(--muted);letter-spacing:1px;">AFZAL PRO CERTIFIED</div>
+      </div>
+    </div>
+    <div class="cert-actions">
+      <button class="btn btn-primary" onclick="printCertificate()">🖨 Print / PDF</button>
+      <button class="btn btn-blue" onclick="printReport()">📋 Full Report</button>
+      <button class="btn btn-secondary" onclick="closeCertModal()">✕ Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">AF</div>
+    <div>
+      <div class="logo-text">AFZAL</div>
+      <div class="logo-sub">Urdu Typing Master</div>
+      <div class="logo-pro">PRO</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="candidate-input-wrap">
+      <span class="candidate-icon">👤</span>
+      <div style="display:flex;flex-direction:column;gap:1px;">
+        <span class="candidate-label">Candidate</span>
+        <input type="text" id="candidate-name-input" class="candidate-input" placeholder="Enter your name" maxlength="50" oninput="saveCandidateNameLive()" onfocus="this.select()">
+      </div>
+    </div>
+    <div class="theme-pills" role="group">
+      <button class="theme-pill" id="pill-light"  onclick="setTheme('light')">☀ Light</button>
+      <button class="theme-pill" id="pill-dark"   onclick="setTheme('dark')">🌙 Dark</button>
+      <button class="theme-pill" id="pill-system" onclick="setTheme('system')">💻 Auto</button>
+    </div>
+    <div class="kb-mode-wrap">
+      <span class="kb-mode-label">⌨ Mode</span>
+      <div class="kb-mode-toggle" role="group" aria-label="Keyboard Input Mode">
+        <button class="kb-mode-btn active" id="kb-mode-qwerty"  onclick="setKbMode('qwerty')"  title="QWERTY — Recommended for keyboard guidance &amp; touch typing practice">QWERTY</button>
+        <button class="kb-mode-btn"        id="kb-mode-phonetic" onclick="setKbMode('phonetic')" title="Urdu Phonetic — For Urdu Phonetic keyboard layout users">PHONETIC</button>
+      </div>
+    </div>
+    <div class="header-badge" id="header-badge-mode">QWERTY</div>
+  </div>
+</header>
+
+<!-- KEYBOARD MODE HINT BAR -->
+<div class="kb-hint-bar" id="kb-hint-bar">
+  <span class="kb-hint-icon">💡</span>
+  <span id="kb-hint-text"><span class="kb-hint-strong">Recommended:</span> Keep Windows keyboard set to <span class="kb-hint-strong">English (QWERTY)</span>. This app maps keys to Urdu Phonetic internally.</span>
+</div>
+
+<div class="app fade-in">
+  <div class="stats">
+    <div class="stat-card wpm"><div class="stat-value" id="wpm-val">0</div><div class="stat-label">WPM</div></div>
+    <div class="stat-card acc"><div class="stat-value" id="acc-val">100%</div><div class="stat-label">Accuracy</div></div>
+    <div class="stat-card time"><div class="stat-value" id="time-val">0:00</div><div class="stat-label">Time</div></div>
+    <div class="stat-card chars"><div class="stat-value" id="chars-val">0</div><div class="stat-label">Characters</div></div>
+    <div class="stat-card streak"><div class="stat-value" id="streak-val">0</div><div class="stat-label">🔥 Streak</div></div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('lesson')">📖 Lessons</button>
+    <button class="tab" onclick="switchTab('practice')">✍️ Practice</button>
+    <button class="tab" onclick="switchTab('test')">⏱ Timed Test</button>
+    <button class="tab" onclick="switchTab('history')">📊 Progress</button>
+    <button class="tab" onclick="switchTab('ref')">📋 Reference</button>
+  </div>
+  <div id="panel-lesson" class="mode-panel active">
+    <div class="lesson-nav">
+      <div class="lesson-groups">
+        <span class="lesson-nav-label">ROW</span>
+        <button class="lesson-group-btn active" id="lg-hr" onclick="selectGroup('hr')">🏠 Home Row</button>
+        <button class="lesson-group-btn"        id="lg-tr" onclick="selectGroup('tr')">⬆ Top Row</button>
+        <button class="lesson-group-btn"        id="lg-br" onclick="selectGroup('br')">⬇ Bottom Row</button>
+      </div>
+      <div class="lesson-phases" id="lesson-phases"></div>
+    </div>
+    <div class="typing-area" style="position:relative;">
+      <div class="lesson-info">
+        <div>
+          <div class="lesson-name" id="lesson-name">Lesson 1 — Home Row</div>
+          <div class="lesson-desc" id="lesson-desc">ہوم رو: ا س د ف گ ح ج ک ل</div>
+        </div>
+        <div class="progress-ring">
+          <span class="prog-text" id="prog-text">0 / 0</span>
+          <div class="progress-bar-wrap"><div class="progress-bar-fill" id="prog-bar" style="width:0%"></div></div>
+        </div>
+      </div>
+      <div class="status-msg" id="status-msg"></div>
+      <div class="urdu-text" id="urdu-display"></div>
+      <div class="controls">
+        <button class="btn btn-secondary" onclick="restartLesson()">↺ Restart</button>
+        <button class="btn btn-primary"   onclick="nextWord()">Next →</button>
+      </div>
+      <div class="result-overlay" id="result-overlay">
+        <div class="result-title">✓ Lesson Complete!</div>
+        <div class="result-grade" id="r-grade-letter">A</div>
+        <div class="result-stats">
+          <div class="result-stat"><div class="val" id="r-wpm"   style="color:var(--gold)">0</div><div class="lbl">WPM</div></div>
+          <div class="result-stat"><div class="val" id="r-acc"   style="color:var(--green)">0%</div><div class="lbl">Accuracy</div></div>
+          <div class="result-stat"><div class="val" id="r-chars" style="color:var(--purple)">0</div><div class="lbl">Chars</div></div>
+        </div>
+        <div class="result-buttons">
+          <button class="btn btn-secondary" onclick="restartLesson()">↺ Retry</button>
+          <button class="btn btn-blue"      onclick="nextLesson()">→ Next Lesson</button>
+          <button class="btn btn-green"     onclick="showCertFromResult()">🏅 Certificate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="panel-practice" class="mode-panel">
+    <div class="typing-area" style="position:relative;">
+      <div class="lesson-info">
+        <div>
+          <div class="lesson-name">Free Practice</div>
+          <div class="lesson-desc" id="prac-desc">Common Urdu words — all keyboard</div>
+        </div>
+        <div class="practice-controls">
+          <button class="diff-btn active" id="diff-easy"   onclick="setPracDiff('easy')">Easy</button>
+          <button class="diff-btn"        id="diff-medium" onclick="setPracDiff('medium')">Medium</button>
+          <button class="diff-btn"        id="diff-hard"   onclick="setPracDiff('hard')">Hard</button>
+          <button class="diff-btn"        id="diff-ppsc"   onclick="setPracDiff('ppsc')">PPSC</button>
+        </div>
+      </div>
+      <div class="status-msg" id="prac-status"></div>
+      <div class="urdu-text" id="prac-display"></div>
+      <div class="controls">
+        <button class="btn btn-secondary" onclick="initPractice()">↺ New Text</button>
+        <button class="btn btn-green"     onclick="showCertFromPrac()">🏅 Certificate</button>
+      </div>
+    </div>
+  </div>
+  <div id="panel-test" class="mode-panel">
+    <div class="typing-area" style="position:relative;">
+      <div class="test-timer-bar"><div class="test-timer-fill" id="test-timer-fill"></div></div>
+      <div class="lesson-info">
+        <div>
+          <div class="lesson-name">Timed Test</div>
+          <div class="lesson-desc" id="test-desc">PPSC-style timed typing assessment</div>
+        </div>
+        <div class="test-controls">
+          <div style="display:flex;gap:5px;">
+            <button class="time-btn active" id="tb-60"  onclick="setTestTime(60)">1 min</button>
+            <button class="time-btn"        id="tb-120" onclick="setTestTime(120)">2 min</button>
+            <button class="time-btn"        id="tb-300" onclick="setTestTime(300)">5 min</button>
+          </div>
+        </div>
+      </div>
+      <div class="status-msg" id="test-status"></div>
+      <div class="urdu-text" id="test-display"></div>
+      <div class="controls">
+        <button class="btn btn-danger"    onclick="resetTest()">✕ Reset</button>
+        <button class="btn btn-secondary" onclick="initTest()">↺ New Test</button>
+      </div>
+      <div class="result-overlay" id="test-result-overlay">
+        <div class="result-title">⏱ Test Complete!</div>
+        <div class="result-grade" id="tr-grade">A</div>
+        <div class="result-stats">
+          <div class="result-stat"><div class="val" id="tr-wpm"   style="color:var(--gold)">0</div><div class="lbl">WPM</div></div>
+          <div class="result-stat"><div class="val" id="tr-acc"   style="color:var(--green)">0%</div><div class="lbl">Accuracy</div></div>
+          <div class="result-stat"><div class="val" id="tr-chars" style="color:var(--purple)">0</div><div class="lbl">Chars</div></div>
+        </div>
+        <div class="result-buttons">
+          <button class="btn btn-secondary" onclick="initTest()">↺ Retry</button>
+          <button class="btn btn-green"     onclick="showCertFromTest()">🏅 Certificate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="panel-history" class="mode-panel">
+    <div class="history-panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:8px;">
+        <div class="history-title">📊 Your Progress Dashboard</div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-secondary" onclick="clearHistory()" style="font-size:0.7rem;padding:6px 14px;">🗑 Clear</button>
+          <button class="btn btn-blue" onclick="exportHistoryCSV()" style="font-size:0.7rem;padding:6px 14px;">⬇ CSV</button>
+        </div>
+      </div>
+      <div class="history-summary" id="hist-summary"></div>
+      <div class="perf-chart-wrap">
+        <div class="perf-chart-title">WPM & Accuracy — Last 15 Sessions</div>
+        <div class="mini-chart" id="perf-chart"></div>
+        <div class="chart-legend">
+          <span><span class="chart-dot" style="background:var(--gold)"></span>WPM (scaled)</span>
+          <span><span class="chart-dot" style="background:var(--green)"></span>Accuracy %</span>
+        </div>
+      </div>
+      <div class="perf-chart-title" style="margin-bottom:6px;">Lesson Completion</div>
+      <div class="lesson-progress-grid" id="lesson-progress-grid"></div>
+      <div id="hist-table-wrap"></div>
+    </div>
+  </div>
+  <div id="panel-ref" class="mode-panel">
+    <div class="ref-panel">
+      <div class="ref-title">Urdu Phonetic Keyboard — Base Layer</div>
+      <div class="ref-grid" id="ref-grid"></div>
+    </div>
+    <div class="ref-panel">
+      <div class="ref-title">Shift Layer — Shift + Key</div>
+      <div class="ref-grid" id="ref-shift-grid"></div>
+    </div>
+    <div class="ref-panel" style="margin-top:8px;">
+      <div class="ref-title">Keyboard Shortcuts</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px;font-size:0.72rem;color:var(--muted);">
+        <div><span style="color:var(--gold)">Tab</span> — Next word</div>
+        <div><span style="color:var(--gold)">Esc</span> — Restart</div>
+        <div><span style="color:var(--gold)">F5</span> — New text</div>
+      </div>
+    </div>
+  </div>
+  <div class="keyboard-wrap">
+    <div class="kb-header">
+      <div class="kb-title">🎹 Urdu Phonetic Keyboard Visualizer</div>
+      <div class="kb-legend">
+        <span><span class="dot" style="background:#4e9eff"></span>Next Key</span>
+        <span><span class="dot" style="background:#8b5cf6"></span>Shift</span>
+        <span><span class="dot" style="background:var(--green)"></span>Correct</span>
+        <span><span class="dot" style="background:var(--red)"></span>Wrong</span>
+        <span><span class="dot" style="background:var(--gold)"></span>Home Row</span>
+      </div>
+    </div>
+    <div class="keyboard" id="keyboard"></div>
+    <div class="kb-accuracy-strip">
+      <span>Session Accuracy</span>
+      <div class="kb-acc-bar"><div class="kb-acc-fill" id="kb-acc-fill" style="width:100%"></div></div>
+      <span class="kb-acc-value" id="kb-acc-value">100%</span>
+    </div>
+  </div>
+</div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       JavaScript Modules — load order matters
+       1. keyboard   : layout maps, keyboard builder, guidance engine
+       2. lessons    : CHAR_SETS, LESSONS array, PRACTICE_SETS, LESSON_GROUPS
+       3. storage    : state vars, localStorage, session saving, renderText
+       4. engine     : timer, lesson/practice/timed-test logic, keydown handler
+       5. ui         : tabs, navigator, progress, certificate, print
+       6. init       : keyboard mode selector, focus persistence, app boot
+  ════════════════════════════════════════════════════════ -->
+  <script src="js/keyboard.js"></script>
+  <script src="js/lessons.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/init.js"></script>
+
+</body>
+</html>
