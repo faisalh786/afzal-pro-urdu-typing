@@ -7,6 +7,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Cinzel:wght@600;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 
+  <!-- Firebase SDKs (compat version — works with script tags, no npm needed) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
   <!-- Theme applied before paint to avoid flash -->
   <script>
 (function(){
@@ -112,6 +117,7 @@
         <button class="kb-mode-btn"        id="kb-mode-phonetic" onclick="setKbMode('phonetic')" title="Urdu Phonetic — For Urdu Phonetic keyboard layout users">PHONETIC</button>
       </div>
     </div>
+    <div id="header-user-wrap" class="header-user-wrap"></div>
     <div class="header-badge" id="header-badge-mode">QWERTY</div>
   </div>
 </header>
@@ -300,6 +306,33 @@
   </div>
 </div>
 
+<!-- UPGRADE MODAL -->
+<div class="upgrade-modal" id="upgrade-modal" style="display:none;">
+  <div class="upgrade-card">
+    <button class="upgrade-close" onclick="closeUpgradeModal()">✕</button>
+    <div class="upgrade-badge">🔒 Pro Feature</div>
+    <div class="upgrade-title">Upgrade to Afzal Pro</div>
+    <div class="upgrade-subtitle">Unlock the complete Urdu typing mastery system</div>
+    <div class="upgrade-features">
+      <div class="upgrade-feature"><span class="uf-icon">✅</span><span>All 20 lessons — Top Row, Number Row, Bottom Row</span></div>
+      <div class="upgrade-feature"><span class="uf-icon">✅</span><span>Free Practice mode with difficulty levels</span></div>
+      <div class="upgrade-feature"><span class="uf-icon">✅</span><span>Timed Tests — PPSC exam simulation</span></div>
+      <div class="upgrade-feature"><span class="uf-icon">✅</span><span>Progress dashboard & session history</span></div>
+      <div class="upgrade-feature"><span class="uf-icon">✅</span><span>Certificate of Achievement</span></div>
+      <div class="upgrade-feature"><span class="uf-icon">✅</span><span>Reference keyboard chart</span></div>
+    </div>
+    <div class="upgrade-price">
+      <div class="upgrade-price-main">Rs. 299 <span>/month</span></div>
+      <div class="upgrade-price-yearly">or Rs. 1,999/year — save 44%</div>
+    </div>
+    <button class="upgrade-cta-btn" onclick="upgradeViaWhatsApp()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.549 4.116 1.512 5.847L.057 23.175a.75.75 0 00.916.919l5.41-1.424A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.726 9.726 0 01-4.953-1.352l-.355-.213-3.684.969.982-3.596-.232-.371A9.712 9.712 0 012.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+      Pay via WhatsApp — JazzCash / EasyPaisa
+    </button>
+    <div class="upgrade-note">After payment, Pro access is activated within 1 hour</div>
+  </div>
+</div>
+
   <!-- ═══════════════════════════════════════════════════════
        JavaScript Modules — load order matters
        1. keyboard   : layout maps, keyboard builder, guidance engine
@@ -315,6 +348,8 @@
   <script src="js/engine.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/init.js"></script>
+  <!-- Auth loads last — boots app after login confirmed -->
+  <script src="js/auth.js"></script>
 
 </body>
 </html>
