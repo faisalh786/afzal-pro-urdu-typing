@@ -5,16 +5,25 @@
 // REPLACE the values below with your real Firebase config
 // from your saved firebase-config.txt file
 // ============================================================
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
 
-const FIREBASE_CONFIG = {
-  apiKey:            "AIzaSyB4SvcdYEvi8pXLTWX0JV8MdAf88s0FCOo",
-  authDomain:        "afzal-pro-urdu-typing-master.firebaseapp.com",
-  projectId:         "afzal-pro-urdu-typing-master",
-  storageBucket:     "afzal-pro-urdu-typing-master.firebasestorage.app",
-  messagingSenderId: "896561418284",
-  appId:             "1:896561418284:web:1194d44bcee51d0f924189"
-};
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyB4SvcdYEvi8pXlTWX0JV8MdAf88s0FCOo",
+    authDomain: "afzal-pro-urdu-typing-master.firebaseapp.com",
+    projectId: "afzal-pro-urdu-typing-master",
+    storageBucket: "afzal-pro-urdu-typing-master.firebasestorage.app",
+    messagingSenderId: "896561418284",
+    appId: "1:896561418284:web:1194d44bcee51d0f924189"
+  };
 
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+</script>
 // ── Free tier lesson IDs (Home Row only — ids 0-5) ──────────
 const FREE_LESSONS = new Set([0, 1, 2, 3, 4, 5]);
 
